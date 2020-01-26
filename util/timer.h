@@ -6,41 +6,53 @@
 typedef struct {
     struct timespec begin;
     struct timespec end;
-} timer;
+} Timer;
 
-int timer_get_precision(long* sec, long* nsec)
+typedef enum {
+    SPAN_NSEC,
+    SPAN_USEC,
+    SPAN_MSEC,
+    SPAN_SEC
+} Span;
+
+int timer_start(Timer *timer)
 {
-    struct timespec res;
+    return timespec_get(&timer->begin, TIME_UTC);
+}
 
-    if (clock_getres(CLOCK_MONOTONIC, &res) == -1) {
-        return -1;
+int timer_stop(Timer *timer)
+{
+    return timespec_get(&timer->end, TIME_UTC);
+}
+
+double timer_get_span(Timer *timer, Span span)
+{
+    long sec  = timer->end.tv_sec - timer->begin.tv_sec;
+    long nsec = timer->end.tv_nsec - timer->begin.tv_nsec;
+
+    if (nsec < 0) {
+        sec--;
+        nsec += 1000000000L;
     }
 
-    *sec  = res.tv_sec;
-    *nsec = res.tv_nsec;
+    double time;
 
-    return 0;
-}
-
-int timer_start(timer* timer)
-{
-    return clock_gettime(CLOCK_MONOTONIC, &timer->begin);
-}
-
-int timer_stop(timer* timer)
-{
-    return clock_gettime(CLOCK_MONOTONIC, &timer->end);
-}
-
-void timer_get_elapsed(timer* timer, long* sec, long* nsec)
-{
-    *sec  = timer->end.tv_sec - timer->begin.tv_sec;
-    *nsec = timer->end.tv_sec - timer->begin.tv_sec;
-
-    if (*nsec < 0) {
-        *sec--;
-        *nsec += 1000000000L;
+    switch (span) {
+        case SPAN_NSEC:
+        time = sec * 1000000000 + nsec;
+        break;
+        case SPAN_USEC:
+        time = sec * 1000000 + (double)nsec / 1000;
+        break;
+        case SPAN_MSEC:
+        time = sec * 1000 + (double)nsec / 1000000;
+        break;
+        default:
+        time = sec + (double)nsec / 1000000000;
+        break;
     }
+
+    return time;
 }
 
 #endif
