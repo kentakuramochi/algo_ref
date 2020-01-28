@@ -26,3 +26,17 @@ void insertion_sort_val(void *array, const unsigned int size, const size_t n, in
 
     free(saved);
 }
+
+void insertion_sort_ptr(void **array, const size_t n, int(*cmp)(const void*, const void*))
+{
+    for (int i = 0; i < n; i++) {
+        int j = i - 1;
+        void *value = array[i];
+        while ((j >= 0) && (cmp(array[j], value) > 0)) {
+            array[j + 1] = array[j];
+            j--;
+        }
+
+        array[j + 1] = value;
+    }
+}
