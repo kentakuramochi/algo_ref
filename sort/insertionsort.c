@@ -2,9 +2,9 @@
 #include <string.h>
 #include <stdlib.h>
 
-#include "insertion_sort.h"
+#include "insertionsort.h"
 
-void insertion_sort_val(void *array, const size_t size, const size_t n, int(*cmp)(const void*, const void*))
+void insertionsort_val(void *array, const size_t size, const size_t n, int(*cmp)(const void*, const void*))
 {
     // tmp area for swap
     void *saved = malloc(size);
@@ -29,7 +29,7 @@ void insertion_sort_val(void *array, const size_t size, const size_t n, int(*cmp
     free(saved);
 }
 
-void insertion_sort_ptr(void **array, const size_t n, int(*cmp)(const void*, const void*))
+void insertionsort_ptr(void **array, const size_t n, int(*cmp)(const void*, const void*))
 {
     for (int i = 0; i < n; i++) {
         int j = i - 1;
