@@ -10,6 +10,7 @@ static void heapify(void **array, int(*cmp)(const void*, const void*), int idx, 
     int right = 2 * idx + 2;
     int largest;
 
+    // find the largest value from array[idx], array[left], array[right]
     if ((left < max) && (cmp(array[left], array[idx]) > 0)) {
         largest = left;
     } else {
@@ -20,6 +21,7 @@ static void heapify(void **array, int(*cmp)(const void*, const void*), int idx, 
         largest = right;
     }
 
+    // if a parent is not the largest, swap recursively
     if (largest != idx) {
         void *tmp = array[idx];
         array[idx] = array[largest];
