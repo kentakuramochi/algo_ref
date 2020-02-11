@@ -1,6 +1,6 @@
-#ifndef INSERTION_SORT_H
-#define INSERTION_SORT_H
+#ifndef QUICK_SORT_H
+#define QUICK_SORT_H
 
-void quicksort_ptr(void **array, int(*cmp)(const void*, const void*), int left, int right);
+void quicksort_ptr(void **values, int total_elems, int(*cmp)(const void*, const void*));
 
 #endif
