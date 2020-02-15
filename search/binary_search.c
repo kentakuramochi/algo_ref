@@ -1,15 +1,21 @@
 #include "binary_search.h"
 
-bool binary_search(int *array, const int size, const int value)
+#include "cmp.h"
+
+bool binary_search(void *array, const int size, const int num, const void *value, int(*cmp)(const void*, const void*));
 {
     int low = 0;
     int high = size - 1;
 
     while (low <= high) {
         int ix = (low + high) / 2;
-        if (value < array[ix]) {
+
+        void *p = array + i * size;
+
+        int d = cmp(&value, p);
+        if (d < 0) {
             high = ix - 1;
-        } else if (value > array[ix]) {
+        } else if (d > 0) {
             low = ix + 1;
         } else {
             return true;

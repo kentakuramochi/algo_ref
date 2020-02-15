@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 
-bool binary_search(int *array, const int size, const int value);
+bool binary_search(void *array, const int size, const int num, const void *value, int(*cmp)(const void*, const void*));
 
 #endif
 
